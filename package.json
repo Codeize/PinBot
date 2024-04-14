@@ -1,7 +1,7 @@
 {
-  "name": "buape-tags",
+  "name": "pinbot",
   "version": "1.0.0",
-  "description": "🏷️ Tags allows for servers to answer the most frequent questions easier",
+  "description": "📌 PinBot enables communities to allow users to pin messages even without the MANAGE_MESSAGES permission.",
   "author": "Codeize",
   "main": "dist/index.js",
   "scripts": {

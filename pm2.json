@@ -1,7 +1,7 @@
 {
   "apps": [
     {
-      "name": "buape-tags",
+      "name": "pinbot",
 			"script": "node",
 			"args": "dist/index.js"
     }
