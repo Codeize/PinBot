@@ -1,10 +1,5 @@
 <div align="center">
-<img width="256" src="https://cdn.buape.com/PinBot.png" alt="PinBot Logo"></a>
-<style>
-  img {
-    border-radius: 25%;
-  }
-</style>
+<img width="256" style="border-radius:25%" src="https://cdn.buape.com/PinBot.png" alt="PinBot Logo"></a>
 </div>
 
 # PinBot
