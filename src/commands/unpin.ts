@@ -84,10 +84,10 @@ export default class SendTagCommand extends SlashCommand {
 
     await createChannelMessage(
       ctx.channelID,
-      `<@${ctx.user.id}> unpinned message: https://discord.com/channels/${ctx.guildID}/${ctx.channelID}/${ctx.targetMessage.id}`
+      `<@${ctx.user.id}> unpinned message: <https://discord.com/channels/${ctx.guildID}/${ctx.channelID}/${ctx.targetMessage.id}>`
     );
     return ctx.send(
-      `:+1: Unpinned message: https://discord.com/channels/${ctx.guildID}/${ctx.channelID}/${ctx.targetMessage.id}`,
+      `:+1: Unpinned message: <https://discord.com/channels/${ctx.guildID}/${ctx.channelID}/${ctx.targetMessage.id}>`,
       { ephemeral: true }
     );
   }
