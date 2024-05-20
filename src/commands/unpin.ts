@@ -1,15 +1,5 @@
-import { ActionRowBuilder, AttachmentBuilder, ButtonBuilder, PermissionsBitField } from 'discord.js';
-import {
-  SlashCommand,
-  CommandContext,
-  SlashCreator,
-  AutocompleteContext,
-  CommandOptionType,
-  ApplicationCommandType,
-  User,
-  ComponentType,
-  ButtonStyle
-} from 'slash-create';
+import { MessageFlagsBitField } from 'discord.js';
+import { ApplicationCommandType, CommandContext, SlashCommand, SlashCreator } from 'slash-create';
 
 async function getAllPins(channelId: string) {
   const allPinnedMessages = await fetch(`https://discord.com/api/v10/channels/${channelId}/pins`, {
@@ -19,24 +9,12 @@ async function getAllPins(channelId: string) {
     }
   });
   if (!allPinnedMessages.ok) return [];
-  const allPinnedMessagesObject = await allPinnedMessages.json();
-  return allPinnedMessagesObject;
+  return await allPinnedMessages.json();
 }
 
 async function checkIfMessageIsPinned(channelId: string, messageId: string) {
   const allPinnedMessagesObject = await getAllPins(channelId);
   return allPinnedMessagesObject.some((msg: any) => msg.id === messageId);
-}
-
-async function pinMessage(channelId: string, messageId: string, user: User) {
-  const req = await fetch(`https://discord.com/api/v10/channels/${channelId}/pins/${messageId}`, {
-    method: 'PUT',
-    headers: {
-      Authorization: `Bot ${process.env.DISCORD_BOT_TOKEN}`,
-      'X-Audit-Log-Reason': `Pin requested by ${user.globalName} (${user.id})`
-    }
-  });
-  return req.ok;
 }
 
 async function unpinMessage(channelId: string, messageId: string) {
@@ -56,7 +34,7 @@ async function createChannelMessage(channelId: string, content: string) {
       Authorization: `Bot ${process.env.DISCORD_BOT_TOKEN}`,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ content })
+    body: JSON.stringify({ content, flags: MessageFlagsBitField.Flags.SuppressEmbeds })
   });
   return req.ok;
 }
