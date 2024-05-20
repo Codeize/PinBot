@@ -10,6 +10,7 @@ logs/
 # Miscellaneous
 .tmp/
 .vscode/**/*
+.idea
 !.vscode/extensions.json
 .env
 dist/

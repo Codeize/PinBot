@@ -1,14 +1,12 @@
-import { ActionRowBuilder, AttachmentBuilder, ButtonBuilder, PermissionsBitField } from 'discord.js';
+import { MessageFlagsBitField } from 'discord.js';
 import {
-  SlashCommand,
-  CommandContext,
-  SlashCreator,
-  AutocompleteContext,
-  CommandOptionType,
   ApplicationCommandType,
-  User,
+  ButtonStyle,
+  CommandContext,
   ComponentType,
-  ButtonStyle
+  SlashCommand,
+  SlashCreator,
+  User
 } from 'slash-create';
 
 async function getAllPins(channelId: string) {
@@ -19,17 +17,11 @@ async function getAllPins(channelId: string) {
     }
   });
   if (!allPinnedMessages.ok) return [];
-  const allPinnedMessagesObject = await allPinnedMessages.json();
-  return allPinnedMessagesObject;
-}
-
-async function checkIfMessageIsPinned(channelId: string, messageId: string) {
-  const allPinnedMessagesObject = await getAllPins(channelId);
-  return allPinnedMessagesObject.some((msg: any) => msg.id === messageId);
+  return await allPinnedMessages.json();
 }
 
 async function pinMessage(channelId: string, messageId: string, user: User) {
-  const req = await fetch(`https://discord.com/api/v10/channels/${channelId}/pins/${messageId}`, {
+  await fetch(`https://discord.com/api/v10/channels/${channelId}/pins/${messageId}`, {
     method: 'PUT',
     headers: {
       Authorization: `Bot ${process.env.DISCORD_BOT_TOKEN}`,
@@ -58,7 +50,7 @@ async function createChannelMessage(channelId: string, content: string) {
       Authorization: `Bot ${process.env.DISCORD_BOT_TOKEN}`,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ content })
+    body: JSON.stringify({ content, flags: MessageFlagsBitField.Flags.SuppressEmbeds })
   });
   return req.ok;
 }
@@ -136,7 +128,9 @@ export default class SendTagCommand extends SlashCommand {
 
     await createChannelMessage(
       ctx.channelID,
-      `<@${ctx.user.id}> pinned message: <https://discord.com/channels/${ctx.guildID}/${ctx.channelID}/${ctx.targetMessage.id}>. Total channel pins: ${sortedPinnedMessages.length + 1}`
+      `<@${ctx.user.id}> pinned message: <https://discord.com/channels/${ctx.guildID}/${ctx.channelID}/${
+        ctx.targetMessage.id
+      }>. Total channel pins: ${sortedPinnedMessages.length + 1}`
     );
     return ctx.send(
       `:+1: Pinned message: <https://discord.com/channels/${ctx.guildID}/${ctx.channelID}/${ctx.targetMessage.id}>`,
